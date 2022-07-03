@@ -1,0 +1,56 @@
+Quando precisamos capturar dados da WEB e não temos link de acesso direto aos dados via URL, deveremos construir um script Web Scraping, com alguma biblioteca de navegação entre páginas, para que consigamos manipular os elementos HTML a partir de clicks, ações e ou entradas de teclado, para conseguirmos acessar a página via URL raiz, logar (quando necessário), navegar até o arquivo que deseja fazer download ou deseja efetuar a capturar através de HTML content ou objeto json.
+
+Para esses casos utilizo bastante a bibilioteca selenium do python, porém existem outras bibliotecas que podem ser usadas a depender do tipo de navegação e manipulação que será feita, como requests, resquests com BS4 (BeautifulSoup)
+
+Abaixo, segue código simples de navegação na página https://sidra.ibge.gov.br/, para download de arquivo com dados do IPCA.
+
+Foi utilizada a bliblioteca selenium do Python para a construção do script, o navegador utilizado foi o Google Chrome versão 03.0.5060.66 e ChromeDrive versão 103.0.5060.53.
+
+
+
+
+"
+from selenium import webdriver
+from time import sleep
+
+options = webdriver.ChromeOptions()
+
+options.add_argument("--start-maximized")
+
+driver = webdriver.Chrome(chrome_options=options,executable_path='./chromedriver.exe')
+driver.get('https://sidra.ibge.gov.br/home/ipp/brasil')
+
+sleep(5)
+
+driver.find_element_by_xpath('/html/body/div[6]/div/div/div/div[1]/ul/li[8]').click()
+
+sleep(5)
+
+driver.find_element_by_xpath('//*[@id="tab-ipca"]/div[1]/h4/button[3]').click()
+
+sleep(5)
+
+driver.find_element_by_xpath('/html/body/div[5]/div/div/div/div[1]/ul/li[3]').click()
+
+sleep(5)
+
+driver.find_element_by_xpath('//*[@id="tab-tabelas"]/section/div[1]/table/tbody/tr[1]/td[3]/a').click()
+
+sleep(5)
+
+driver.find_element_by_xpath('//*[@id="panel-V-collapse"]/div[2]/div/div[1]/div[1]/div/button[1]').click()
+
+sleep(1)
+
+driver.find_element_by_xpath('//*[@id="panel-P-collapse"]/div[2]/div/div[1]/div[1]/div/button[1]').click()
+
+sleep(1)
+
+driver.find_element_by_id('botao-downloads')
+
+# configurar o local que o arquivo deve ser salvo, fazer uma verificação no diretorio de tempo em tempo, para aguardar o dowmload finalizar.
+
+
+driver.close()
+
+"
